@@ -3,6 +3,7 @@ import numpy as np
 import os
 import glob
 import csv
+
 #import shutil
 
 
@@ -31,7 +32,6 @@ def cleancsv(source):
     print(indexed_data)
     indexed_data.to_csv(source, index_label='Date')
     print('job done')
-
     # #filename = destination + '/' + source
     # with open(destination, 'w') as f:
     #     indexed_data.to_csv(f, index_label='Date')
@@ -56,7 +56,7 @@ def calcopening(source):
     print('complete')
 
 
-def cleanall(source, destination):
+def cleanall(source):
 
     os.chdir(source)
     for file in glob.glob("*.csv"):
@@ -66,12 +66,13 @@ def cleanall(source, destination):
 
 
 def applyfunc(func, source, *args, **kwargs):
-    os.chdir(source)
+
+   # os.chdir(source)
     for file in glob.glob("*.csv"):
         filename = os.path.basename(file)
         func(file, *args, **kwargs)
 
 
 if __name__ == "__main__":
-    cleanall('./data/', './cdata/')
-    #applyfunc(calcopening, './data/')
+    cleanall('./data/')
+    applyfunc(calcopening, './data/')
