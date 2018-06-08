@@ -3,7 +3,6 @@ import numpy as np
 import os
 import glob
 import csv
-
 #import shutil
 
 
@@ -22,16 +21,22 @@ def cleancsv(source):
     # print('ok')
 
     data = data.drop_duplicates(subset='Date', keep='first')
-    data['Date'] = pd.to_datetime(data['Date'])
-    data.set_index('Date', drop=False, inplace=True)
+    data = data.set_index(pd.DatetimeIndex(data['Date']))
+
+    #data.set_index('Date', drop=False, inplace=True)
+
     idx = pd.date_range(data.index.min(), data.index.max())
+
     indexed_data = data.reindex(index=idx, fill_value=np.nan)
+
     indexed_data = indexed_data.replace('0', np.nan)
     indexed_data = indexed_data.fillna(method='ffill')
     indexed_data = indexed_data.drop('Date', 1)
+
     print(indexed_data)
     indexed_data.to_csv(source, index_label='Date')
     print('job done')
+
     # #filename = destination + '/' + source
     # with open(destination, 'w') as f:
     #     indexed_data.to_csv(f, index_label='Date')
@@ -56,7 +61,7 @@ def calcopening(source):
     print('complete')
 
 
-def cleanall(source):
+def cleanall(source, destination):
 
     os.chdir(source)
     for file in glob.glob("*.csv"):
@@ -66,13 +71,13 @@ def cleanall(source):
 
 
 def applyfunc(func, source, *args, **kwargs):
-
-   # os.chdir(source)
+    # os.chdir(source)
     for file in glob.glob("*.csv"):
         filename = os.path.basename(file)
         func(file, *args, **kwargs)
 
 
 if __name__ == "__main__":
-    cleanall('./data/')
+    cleanall('./data/', './data/')
+
     applyfunc(calcopening, './data/')
