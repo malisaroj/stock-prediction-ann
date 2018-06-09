@@ -83,7 +83,6 @@ def addtechnicalindicators(source):
     df = EMA(df)
     df = MACD(df)
     df = RSI(df)
-    df = movingaverage(df)
 
     df = df.round(5)
     df.to_csv(source, index=True)
