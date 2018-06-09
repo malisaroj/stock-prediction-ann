@@ -4,7 +4,7 @@ import os
 import glob
 import csv
 #import shutil
-from technicalindicators import SMA, EMA, MACD, RSI, movingaverage
+from technicalIndicators import SMA, EMA, MACD, RSI
 
 
 def cleancsv(source):
@@ -62,7 +62,7 @@ def calcopening(source):
     print('complete')
 
 
-def cleanall(source, destination):
+def cleanall(source):
 
     os.chdir(source)
     for file in glob.glob("*.csv"):
@@ -96,7 +96,7 @@ def applyfunc(func, source, *args, **kwargs):
 
 
 if __name__ == "__main__":
-    cleanall('./data/', './data/')
+    cleanall('./data/')
 
     applyfunc(calcopening, './data/')
 
