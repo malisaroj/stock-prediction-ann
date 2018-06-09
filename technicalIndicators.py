@@ -120,13 +120,3 @@ def RSI(df, base='Closing Price', period=21):
 
     return df
 
-
-def movingaverage(df, window_length=14):
-    # Get only closing price
-    close = df['Closing Price']
-
-    ewma = close.ewm(span=window_length).mean().rename('CP_EMA')
-    sma = close.ewm(span=window_length).mean().rename('CP_SMA')
-
-    df = pd.concat([df, ewma, sma], axis=1)
-    return df
