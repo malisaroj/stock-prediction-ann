@@ -4,7 +4,7 @@ import os
 import glob
 import csv
 #import shutil
-from fuk import SMA, EMA, MACD, RSI, movingaverage
+from technicalindicators import SMA, EMA, MACD, RSI, movingaverage
 
 
 def cleancsv(source):
@@ -87,7 +87,7 @@ def addtechnicalindicators(source):
 
     df = df.round(5)
     df.to_csv(source, index=True)
-    print('done')
+
 
 def applyfunc(func, source, *args, **kwargs):
     # os.chdir(source)
