@@ -8,9 +8,9 @@ def scrapper(path):
     index = 1
     dictionary = {}
 
-    print('{}{}{}'.format('Stock Name', 'Stock Symbol', 'Stock Number'))
+    print('{}{}{}{}'.format('Stock Name', 'Stock Symbol', 'Stock Number', 'Sector'))
     stock_symbols = open('stock_symbols.csv', 'w')
-    stock_symbols.write('{},{},{}\n'.format('Stock Name', 'Stock Symbol', 'Stock Number'))
+    stock_symbols.write('{},{},{},{}\n'.format('Stock Name', 'Stock Symbol', 'Stock Number', 'Sector'))
 
     while index < 12:
         try:
@@ -24,9 +24,10 @@ def scrapper(path):
                 tds = tr.find_all('td')
                 tdl = tds[5].select('a[href]')
                 tdl = str(tdl)
-                print('{:60.60}{:>20}{:>20}'.format(tds[2].text.strip(), tds[3].text, tdl[69:72]))
+                print('{:60.60}{:>20}{:>20}{:>20}'.format(tds[2].text.strip(), tds[3].text, tdl[69:72], tds[4].text))
                 dictionary[tds[3].text] = tdl[69:72]
-                stock_symbols.write('{},{},{}\n'.format(tds[2].text.strip(), tds[3].text, tdl[69:72]))
+                stock_symbols.write('{},{},{},{}\n'.format(tds[2].text.strip(), tds[3].text, tdl[69:72], ))
+
             except:
                 pass
 

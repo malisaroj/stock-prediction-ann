@@ -29,7 +29,7 @@ def checkDir(source):
 
     for file in glob.glob("*.csv"):
         TABLENAME = file
-        ENGINE = create_engine('sqlite:///data.db', echo=False)
+        ENGINE = create_engine('sqlite:///../data.db', echo=False)
         filename = os.path.basename(file)
         print('setting up db')
         setup(ENGINE, TABLENAME)

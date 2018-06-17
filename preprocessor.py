@@ -86,7 +86,7 @@ def addtechnicalindicators(source):
 
     df = df.round(5)
     df.to_csv(source, index=True)
-
+    print('ok')
 
 def applyfunc(func, source, *args, **kwargs):
     # os.chdir(source)
