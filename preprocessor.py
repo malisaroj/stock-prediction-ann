@@ -30,7 +30,7 @@ def cleancsv(source):
 
     indexed_data = df.reindex(index=idx, fill_value=np.nan)
 
-    indexed_data = indexed_data.replace('0', np.nan)
+    indexed_data = indexed_data.replace(0, np.nan)
     indexed_data = indexed_data.fillna(method='ffill')
     indexed_data = indexed_data.drop('Date', 1)
 
