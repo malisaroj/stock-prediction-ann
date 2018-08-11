@@ -91,7 +91,7 @@ def MACD(df, fastEMA=12, slowEMA=26, signal=9, base='Closing Price'):
 
     return df
 
-
+#Relative Strength Index  (Momentum Indicator)
 def RSI(df, base='Closing Price', period=21):
     """
     Function to compute Relative Strength Index (RSI)
@@ -191,5 +191,39 @@ def HA(df, ohlc=['Open', 'High', 'Low', 'Close']):
     
     return df
 
-
+#Average Directional Movement Index  (Trend Indicator)
+ """The A.D.X. is 100 * smoothed moving average of absolute value (DMI +/-) divided by (DMI+ + DMI-). ADX does not indicate trend direction or momentum,
+    only trend strength. Generally, A.D.X. readings below 20 indicate trend weakness,
+    and readings above 40 indicate trend strength. An extremely strong trend is indicated by readings above 50"""
+def ADX(df, n=14, n_ADX=14):  
+    i = 0  
+    UpI = []  
+    DoI = []  
+    while i + 1 <= df.index[-1]:  
+        UpMove = df.get_value(i + 1, 'High') - df.get_value(i, 'High')  
+        DoMove = df.get_value(i, 'Low') - df.get_value(i + 1, 'Low')  
+        if UpMove > DoMove and UpMove > 0:  
+            UpD = UpMove  
+        else: UpD = 0  
+        UpI.append(UpD)  
+        if DoMove > UpMove and DoMove > 0:  
+            DoD = DoMove  
+        else: DoD = 0  
+        DoI.append(DoD)  
+        i = i + 1  
+    i = 0  
+    TR_l = [0]  
+    while i < df.index[-1]:  
+        TR = max(df.get_value(i + 1, 'High'), df.get_value(i, 'Close')) - min(df.get_value(i + 1, 'Low'), df.get_value(i, 'Close'))  
+        TR_l.append(TR)  
+        i = i + 1  
+    TR_s = pd.Series(TR_l)  
+    ATR = pd.Series(pd.ewma(TR_s, span = n, min_periods = n))  
+    UpI = pd.Series(UpI)  
+    DoI = pd.Series(DoI)  
+    PosDI = pd.Series(pd.ewma(UpI, span = n, min_periods = n - 1) / ATR)  
+    NegDI = pd.Series(pd.ewma(DoI, span = n, min_periods = n - 1) / ATR)  
+    ADX = pd.Series(pd.ewma(abs(PosDI - NegDI) / (PosDI + NegDI), span = n_ADX, min_periods = n_ADX - 1), name = 'ADX_' + str(n) + '_' + str(n_ADX))  
+    df = df.join(ADX)  
+    return df
 
