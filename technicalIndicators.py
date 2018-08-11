@@ -120,3 +120,76 @@ def RSI(df, base='Closing Price', period=21):
 
     return df
 
+
+#Bollinger Bands  (Volatility Indicator)
+def BBand(df, base='Close', period=20, multiplier=2):
+    
+    Function to compute Bollinger Band (BBand)
+    
+    Args :
+        df : Pandas DataFrame which contains ['date', 'open', 'high', 'low', 'close', 'volume'] columns
+        base : String indicating the column name from which the MACD needs to be computed from (Default Close)
+        period : Integer indicates the period of computation in terms of number of candles
+        multiplier : Integer indicates value to multiply the SD
+        
+    Returns :
+        df : Pandas DataFrame with new columns added for 
+            Upper Band (UpperBB_$period_$multiplier)
+            Lower Band (LowerBB_$period_$multiplier)
+    
+    
+    upper = 'UpperBB_' + str(period) + '_' + str(multiplier)
+    lower = 'LowerBB_' + str(period) + '_' + str(multiplier)
+    
+    sma = df[base].rolling(window=period, min_periods=period - 1).mean()
+    sd = df[base].rolling(window=period).std()
+    df[upper] = sma + (multiplier * sd)
+    df[lower] = sma - (multiplier * sd)
+    
+    df[upper].fillna(0, inplace=True)
+    df[lower].fillna(0, inplace=True)
+    
+    return df
+
+def HA(df, ohlc=['Open', 'High', 'Low', 'Close']):
+    
+    Function to compute Heiken Ashi Candles (HA)
+    
+    Args :
+        df : Pandas DataFrame which contains ['date', 'open', 'high', 'low', 'close', 'volume'] columns
+        ohlc: List defining OHLC Column names (default ['Open', 'High', 'Low', 'Close'])
+        
+    Returns :
+        df : Pandas DataFrame with new columns added for 
+            Heiken Ashi Close (HA_$ohlc[3])
+            Heiken Ashi Open (HA_$ohlc[0])
+            Heiken Ashi High (HA_$ohlc[1])
+            Heiken Ashi Low (HA_$ohlc[2])
+
+
+    ha_open = 'HA_' + ohlc[0]
+    ha_high = 'HA_' + ohlc[1]
+    ha_low = 'HA_' + ohlc[2]
+    ha_close = 'HA_' + ohlc[3]
+    
+    df[ha_close] = (df[ohlc[0]] + df[ohlc[1]] + df[ohlc[2]] + df[ohlc[3]]) / 4
+
+    idx = df.index.name
+    df.reset_index(inplace=True)
+    
+    for i in range(0, len(df)):
+        if i == 0:
+            df.set_value(i, ha_open, ((df.get_value(i, ohlc[0]) + df.get_value(i, ohlc[3])) / 2))
+        else:
+            df.set_value(i, ha_open, ((df.get_value(i - 1, ha_open) + df.get_value(i - 1, ha_close)) / 2))
+            
+    if idx:
+        df.set_index(idx, inplace=True)
+    
+    df[ha_high]=df[[ha_open, ha_close, ohlc[1]]].max(axis=1)
+    df[ha_low]=df[[ha_open, ha_close, ohlc[2]]].min(axis=1)
+    
+    return df
+
+
+
