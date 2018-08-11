@@ -123,7 +123,7 @@ def RSI(df, base='Closing Price', period=21):
 
 #Bollinger Bands  (Volatility Indicator)
 def BBand(df, base='Close', period=20, multiplier=2):
-    
+    """
     Function to compute Bollinger Band (BBand)
     
     Args :
@@ -136,7 +136,7 @@ def BBand(df, base='Close', period=20, multiplier=2):
         df : Pandas DataFrame with new columns added for 
             Upper Band (UpperBB_$period_$multiplier)
             Lower Band (LowerBB_$period_$multiplier)
-    
+    """
     
     upper = 'UpperBB_' + str(period) + '_' + str(multiplier)
     lower = 'LowerBB_' + str(period) + '_' + str(multiplier)
@@ -152,7 +152,7 @@ def BBand(df, base='Close', period=20, multiplier=2):
     return df
 
 def HA(df, ohlc=['Open', 'High', 'Low', 'Close']):
-    
+    """
     Function to compute Heiken Ashi Candles (HA)
     
     Args :
@@ -165,7 +165,7 @@ def HA(df, ohlc=['Open', 'High', 'Low', 'Close']):
             Heiken Ashi Open (HA_$ohlc[0])
             Heiken Ashi High (HA_$ohlc[1])
             Heiken Ashi Low (HA_$ohlc[2])
-
+    """
 
     ha_open = 'HA_' + ohlc[0]
     ha_high = 'HA_' + ohlc[1]
