@@ -114,7 +114,7 @@ def RSI(df, base='Closing Price', period=21):
 
 
 #Bollinger Bands  (Volatility Indicator)
-def BBand(df, base='Close', period=20, multiplier=2):
+def BBand(df, base='Closing Price', period=20, multiplier=2):
     """
     Function to compute Bollinger Band (BBand)
     
@@ -143,7 +143,7 @@ def BBand(df, base='Close', period=20, multiplier=2):
     
     return df
 
-def HA(df, ohlc=['Open', 'High', 'Low', 'Close']):
+def HA(df, ohlc=['Opening Price', 'Maximum Price', 'Minimum Price', 'Closing Price']):
     """
     Function to compute Heiken Ashi Candles (HA)
     
@@ -198,8 +198,8 @@ def ADX(df, n=14, n_ADX=14):
     UpI = []  
     DoI = []
     while i + 1 <= df.index[-1]:  
-        UpMove = df.get_value(i + 1, 'High') - df.get_value(i, 'High')  
-        DoMove = df.get_value(i, 'Low') - df.get_value(i + 1, 'Low')  
+        UpMove = df.get_value(i + 1, 'Maximum Price') - df.get_value(i, 'Maximum Price')  
+        DoMove = df.get_value(i, 'Minimum Price') - df.get_value(i + 1, 'Minimum Price')  
         if UpMove > DoMove and UpMove > 0:  
             UpD = UpMove  
         else: UpD = 0  
@@ -212,7 +212,7 @@ def ADX(df, n=14, n_ADX=14):
     i = 0  
     TR_l = [0]  
     while i < df.index[-1]:  
-        TR = max(df.get_value(i + 1, 'High'), df.get_value(i, 'Close')) - min(df.get_value(i + 1, 'Low'), df.get_value(i, 'Close'))  
+        TR = max(df.get_value(i + 1, 'Maximum Price'), df.get_value(i, 'Closing Price')) - min(df.get_value(i + 1, 'Minimum Price'), df.get_value(i, 'Closing Price'))  
         TR_l.append(TR)  
         i = i + 1  
     TR_s = pd.Series(TR_l)  

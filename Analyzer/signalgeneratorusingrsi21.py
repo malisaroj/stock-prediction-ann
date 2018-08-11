@@ -43,4 +43,4 @@ df['Signal'] = Signal
 df['Updown'] = Updown
 print(df['Signal'])
 
-# df.to_csv('NABIL.csv')
+# df.to_csv('NABIL.csv') 
