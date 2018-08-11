@@ -5,13 +5,11 @@ import numpy as np
 def SMA(df, base='Closing Price', target='SMA', period=14):
     """
     Function to compute Simple Moving Average (SMA)
-
     Args :
         df : Pandas DataFrame which contains ['date', 'open', 'high', 'low', 'close', 'volume'] columns
         base : String indicating the column name from which the SMA needs to be computed from
         target : String indicates the column name to which the computed data needs to be stored
         period : Integer indicates the period of computation in terms of number of candles
-
     Returns :
         df : Pandas DataFrame with new column added with name 'target'
     """
@@ -25,14 +23,12 @@ def SMA(df, base='Closing Price', target='SMA', period=14):
 def EMA(df, base='Closing Price', target='EMA', period=14, alpha=False):
     """
     Function to compute Exponential Moving Average (EMA)
-
     Args :
         df : Pandas DataFrame which contains ['date', 'open', 'high', 'low', 'close', 'volume'] columns
         base : String indicating the column name from which the EMA needs to be computed from
         target : String indicates the column name to which the computed data needs to be stored
         period : Integer indicates the period of computation in terms of number of candles
         alpha : Boolean if True indicates to use the formula for computing EMA using alpha (default is False)
-
     Returns :
         df : Pandas DataFrame with new column added with name 'target'
     """
@@ -53,14 +49,12 @@ def EMA(df, base='Closing Price', target='EMA', period=14, alpha=False):
 def MACD(df, fastEMA=12, slowEMA=26, signal=9, base='Closing Price'):
     """
     Function to compute Moving Average Convergence Divergence (MACD)
-
     Args :
         df : Pandas DataFrame which contains ['date', 'open', 'high', 'low', 'close', 'volume'] columns
         fastEMA : Integer indicates faster EMA
         slowEMA : Integer indicates slower EMA
         signal : Integer indicates the signal generator for MACD
         base : String indicating the column name from which the MACD needs to be computed from (Default Close)
-
     Returns :
         df : Pandas DataFrame with new columns added for
             Fast EMA (ema_$fastEMA)
@@ -95,12 +89,10 @@ def MACD(df, fastEMA=12, slowEMA=26, signal=9, base='Closing Price'):
 def RSI(df, base='Closing Price', period=21):
     """
     Function to compute Relative Strength Index (RSI)
-
     Args :
         df : Pandas DataFrame which contains ['date', 'open', 'high', 'low', 'close', 'volume'] columns
         base : String indicating the column name from which the MACD needs to be computed from (Default Close)
         period : Integer indicates the period of computation in terms of number of candles
-
     Returns :
         df : Pandas DataFrame with new columns added for
             Relative Strength Index (RSI_$period)
@@ -165,8 +157,8 @@ def HA(df, ohlc=['Open', 'High', 'Low', 'Close']):
             Heiken Ashi Open (HA_$ohlc[0])
             Heiken Ashi High (HA_$ohlc[1])
             Heiken Ashi Low (HA_$ohlc[2])
-    """
 
+    """
     ha_open = 'HA_' + ohlc[0]
     ha_high = 'HA_' + ohlc[1]
     ha_low = 'HA_' + ohlc[2]
@@ -192,13 +184,19 @@ def HA(df, ohlc=['Open', 'High', 'Low', 'Close']):
     return df
 
 #Average Directional Movement Index  (Trend Indicator)
- """The A.D.X. is 100 * smoothed moving average of absolute value (DMI +/-) divided by (DMI+ + DMI-). ADX does not indicate trend direction or momentum,
-    only trend strength. Generally, A.D.X. readings below 20 indicate trend weakness,
-    and readings above 40 indicate trend strength. An extremely strong trend is indicated by readings above 50"""
+
 def ADX(df, n=14, n_ADX=14):  
-    i = 0  
+
+    """The A.D.X. is 100 * smoothed moving average of absolute value (DMI +/-)
+    divided by (DMI+ + DMI-). ADX does not indicate trend direction or momentum, 
+    only trend strength. Generally, A.D.X. readings below 20 indicate trend 
+    weakness, and readings above 40 indicate trend strength.
+    An extremely strong trend is indicated by readings above 50"""
+
+
+    i = 0
     UpI = []  
-    DoI = []  
+    DoI = []
     while i + 1 <= df.index[-1]:  
         UpMove = df.get_value(i + 1, 'High') - df.get_value(i, 'High')  
         DoMove = df.get_value(i, 'Low') - df.get_value(i + 1, 'Low')  
@@ -226,4 +224,3 @@ def ADX(df, n=14, n_ADX=14):
     ADX = pd.Series(pd.ewma(abs(PosDI - NegDI) / (PosDI + NegDI), span = n_ADX, min_periods = n_ADX - 1), name = 'ADX_' + str(n) + '_' + str(n_ADX))  
     df = df.join(ADX)  
     return df
-
