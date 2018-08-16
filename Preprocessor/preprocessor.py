@@ -57,7 +57,7 @@ def calcopening(source):
     # and larger than Minimum Price
     df['Maximum Price'] = df[['Opening Price', 'Maximum Price', 'Minimum Price', 'Closing Price']].max(axis=1)
     df['Minimum Price'] = df[['Opening Price', 'Maximum Price', 'Minimum Price', 'Closing Price']].min(axis=1)
-    df.set_value(df.index[0], 'Opening Price', df.get_value(df.index[0], 'Closing Price'))
+    df.at(df.index[0], 'Opening Price', df.at(df.index[0], 'Closing Price'))
     df.to_csv(source, index=True)
     print('complete')
 
